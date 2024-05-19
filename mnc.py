@@ -142,7 +142,18 @@ def gaussJordan(ordemMatriz, matrizCoeficientes, vetorIndependente):
     
     return vetorSolucao
 
+# função para checar a diagonal dominante para o método de jacobi
+def diagonalDominante(ordemMatriz, matriz):
+    for i in range(ordemMatriz):
+        soma = sum(abs(matriz[i][j]) for j in range(ordemMatriz) if j != i)
+        if abs(matriz[i][i]) <= soma:
+            return False
+    return True
+
 def jacobi(ordemMatriz, matrizCoeficientes, vetorIndependente, aproximacaoInicial, precisao, maxIteracoes):
+    if not diagonalDominante(ordemMatriz, matrizCoeficientes):
+        raise ValueError("A matriz dos coeficientes não é estritamente diagonal dominante. O método de Jacobi pode não convergir.")
+    
     xAtual = aproximacaoInicial[:]
     xNovo = [0] * ordemMatriz
     
@@ -253,8 +264,9 @@ def exibirMenu():
     print("8 - Resolver sistema por Gauss-Jordan")
     print("9 - Resolver sistema por método de Jacobi")
     print("10 - Resolver sistema por método de Gauss-Seidel")
-    print("11 - Alterar matriz")
-    print("12 - Alterar vetor independente")
+    print("11 - Resolver sistema por método de Cholesky")
+    print("12 - Alterar matriz")
+    print("13 - Alterar vetor")
     print("0 - Sair")
     return input("Escolha uma opção: ")
 
@@ -326,12 +338,16 @@ def main():
                 aproximacaoInicial = list(map(float, input(f"Digite a aproximação inicial separada por espaço: ").split()))
                 solucao, iteracoes = gaussSeidel(ordemMatriz, matriz, vetor, aproximacaoInicial, precisao, maxIteracoes)
                 print(f"Solução do Sistema por Gauss-Seidel: {solucao}, Iterações: {iteracoes}")
-
+            
             elif opcao == '11':
+                solucao = cholesky(ordemMatriz, matriz, vetor)
+                print(f"Solução do Sistema por Cholesky: {solucao}")
+
+            elif opcao == '12':
                 ordemMatriz = int(input("Digite a nova ordem da matriz: "))
                 matriz = lerMatriz(ordemMatriz)
 
-            elif opcao == '12':
+            elif opcao == '13':
                 vetor = lerVetor(ordemMatriz)
 
             elif opcao == '0':
