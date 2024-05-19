@@ -31,19 +31,14 @@ def sistemaTriangularInferior(ordemMatriz, matrizCoeficientes, vetorIndependente
     return vetorSolucao
 
 def sistemaTriangularSuperior(ordemMatriz, MatrizCoeficientes, vetorIndependente):
-    # Inicializa o vetor de solução com zeros
     vetorSolucao = [0] * ordemMatriz
     
-    # Percorre as linhas da matriz de baixo para cima
     for i in range(ordemMatriz - 1, -1, -1):
-        # Inicializa o elemento da solução com o termo independente correspondente
         vetorSolucao[i] = vetorIndependente[i]
         
-        # Percorre os elementos seguintes na linha atual para subtrair da solução
         for j in range(i + 1, ordemMatriz):
             vetorSolucao[i] -= MatrizCoeficientes[i][j] * vetorSolucao[j]
         
-        # Divide o elemento pelo coeficiente correspondente na diagonal
         vetorSolucao[i] /= MatrizCoeficientes[i][i]
     
     vetorSolucao = [round(x, 4) for x in vetorSolucao]
